@@ -2,7 +2,7 @@ CREATE TABLE users (
 
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255) NOT NULL,
-    email_address VARCHAR(255),
+    email VARCHAR(255),
     password VARCHAR(255)
 
 );
@@ -28,3 +28,19 @@ CREATE TABLE properties (
     active BOOLEAN DEFAULT TRUE
 
 );
+
+
+CREATE TABLE reservations (
+
+    id SERIAL PRIMARY KEY NOT NULL,
+    property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
+    guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    start_date TIMESTAMP,
+    end_date TIMESTAMP
+
+);
+
+
+
+
+
