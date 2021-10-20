@@ -35,10 +35,24 @@ CREATE TABLE reservations (
     id SERIAL PRIMARY KEY NOT NULL,
     property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
     guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    start_date TIMESTAMP,
-    end_date TIMESTAMP
+    start_date DATE,
+    end_date DATE
 
 );
+
+
+CREATE TABLE property_reviews (
+
+    id SERIAL PRIMARY KEY NOT NULL,
+    property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
+    guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    reservation_id INTEGER REFERENCES reservations(id) ON DELETE CASCADE,    
+    message TEXT,
+    rating INTEGER
+
+);
+
+
 
 
 
