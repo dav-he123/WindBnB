@@ -32,7 +32,6 @@ const getUserWithEmail = function(email) {
   .then((result) => {
 
     // console.log("AAAAA: ", result);
-
     if(result.rows.length === 0) {
 
       return null;
@@ -119,7 +118,23 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+
+  return pool
+  .query(`SELECT * FROM reservations JOIN users ON users.id = $1 LIMIT $2`, [guest_id, limit])
+  .then((result) => {
+    
+    // console.log("%%%%%%: ", result); 
+    return result.rows;
+
+  })
+  .catch((err) => {
+    
+    console.log(err.message)
+    
+  });
+
+
+  // return getAllProperties(null, 2);
 }
 exports.getAllReservations = getAllReservations;
 
@@ -137,7 +152,7 @@ const getAllProperties = function(options, limit = 10) {
   .query(`SELECT * FROM properties LIMIT $1`, [limit])
   .then((result) => {
     
-    // console.log(result.rows); 
+    // console.log("!!!!!: ", result.rows); 
     return result.rows;
 
   })
