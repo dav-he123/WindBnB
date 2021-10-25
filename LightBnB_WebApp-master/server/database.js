@@ -2,21 +2,36 @@ const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 
 const { Pool } = require('pg');
-const e = require('express');
+// const e = require('express');
 // const myArgs = process.argv.slice(2);
 // console.log('myArgs: ', myArgs);
 
-const pool = new Pool({
-    user: 'davidhe',
-    password: '123',
-    host: 'localhost',
-    database: 'windbnb'
-  })
+// const pool = new Pool({
+//     user: 'davidhe',
+//     password: '123',
+//     host: 'localhost',
+//     database: 'windbnb'
+//   })
   
-  pool.connect((err) => {
-      if (err) throw err;
-      console.log('Connected!');
-    });
+  // pool.connect((err) => {
+  //     if (err) throw err;
+  //     console.log('Connected!');
+  //   });
+
+
+  const { Pool } = require('pg')
+
+  const pool = new Pool()
+
+  module.exports = {
+
+    query: (text, params, callback) => {
+      return pool.query(text, params, callback)
+
+    },
+  }
+
+
 
 
 /// Users
