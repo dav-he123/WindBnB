@@ -1,22 +1,12 @@
 const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 
-const { Pool } = require('pg');
-const e = require('express');
-// const myArgs = process.argv.slice(2);
-// console.log('myArgs: ', myArgs);
+const db = require('./db')
 
-const pool = new Pool({
-    user: 'davidhe',
-    password: '123',
-    host: 'localhost',
-    database: 'windbnb'
-  })
-  
-  pool.connect((err) => {
-      if (err) throw err;
-      console.log('Connected!');
-    });
+// const { Pool } = require('pg');
+// const e = require('express');
+// const myArgs = process.argv.slice(2);
+// console.log('myArgs: ', myArgs);  
 
 /// Users
 
@@ -27,7 +17,7 @@ const pool = new Pool({
  */
 const getUserWithEmail = function(email) {
 
-  return pool
+  return db
   .query(`SELECT * FROM users WHERE users.email = $1`, [email])
   .then((result) => {
 
@@ -57,7 +47,7 @@ exports.getUserWithEmail = getUserWithEmail;
  */
 const getUserWithId = function(id) {
 
-  return pool
+  return db
   .query(`SELECT * FROM users WHERE users.id = $1`, [id])
   .then((result) => {
 
@@ -92,7 +82,7 @@ const addUser =  function(user) {
 
   // console.log("ASDASDAD: ", user);
 
-  return pool
+  return db
   .query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3) 
         RETURNING *;`, [user.name, user.email, user.password])
   .then((result) => {
@@ -119,7 +109,7 @@ exports.addUser = addUser;
  */
 const getAllReservations = function(guest_id, limit = 10) {
 
-  return pool
+  return db
   .query(`SELECT * FROM reservations JOIN users ON users.id = $1 LIMIT $2`, [guest_id, limit])
   .then((result) => {
     
@@ -213,7 +203,7 @@ const getAllProperties = function(options, limit = 10) {
   // console.log(queryString, queryParams);
 
 
-  return pool.query(queryString, queryParams).then((result) => {
+  return db.query(queryString, queryParams).then((result) => {
 
     console.log(result.rows);
     return result.rows;
@@ -233,7 +223,7 @@ const addProperty = function(property) {
   // console.log("ANSWER1111: ", property);
 
 
-  return pool
+  return db
   .query(`INSERT INTO properties (owner_id, title, description, thumbnail_photo_url, cover_photo_url, cost_per_night, street, city, province, post_code, country, parking_spaces, number_of_bathrooms, number_of_bedrooms) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) 
         RETURNING *;`, 
         [property.owner_id, property.title, property.description, property.thumbnail_photo_url, property.cover_photo_url, property.cost_per_night, property.street, property.city, property.province, property.post_code, property.country, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms])
