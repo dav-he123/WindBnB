@@ -113,7 +113,7 @@ const getAllReservations = function(guest_id, limit = 10) {
   .query(`SELECT * FROM reservations JOIN users ON users.id = $1 LIMIT $2`, [guest_id, limit])
   .then((result) => {
     
-    // console.log("%%%%%%: ", result); 
+    console.log("%%%%%%: ", result); 
     return result.rows;
 
   })
@@ -205,7 +205,7 @@ const getAllProperties = function(options, limit = 10) {
 
   return db.query(queryString, queryParams).then((result) => {
 
-    console.log(result.rows);
+    // console.log(result.rows);
     return result.rows;
 
   })
