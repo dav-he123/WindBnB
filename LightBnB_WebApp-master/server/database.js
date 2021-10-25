@@ -2,52 +2,21 @@ const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 
 const { Pool } = require('pg');
-// const e = require('express');
+const e = require('express');
 // const myArgs = process.argv.slice(2);
 // console.log('myArgs: ', myArgs);
 
-// const pool = new Pool({
-//     user: 'davidhe',
-//     password: '123',
-//     host: 'localhost',
-//     database: 'windbnb'
-//   })
+const pool = new Pool({
+    user: 'davidhe',
+    password: '123',
+    host: 'localhost',
+    database: 'windbnb'
+  })
   
-  // pool.connect((err) => {
-  //     if (err) throw err;
-  //     console.log('Connected!');
-  //   });
-
-
-  const { Pool } = require('pg')
-
-  const pool = new Pool()
-
-  module.exports = {
-
-    query: (text, params, callback) => {
-      
-      const start = Date.now()
-      
-      return pool.query(text, params, (err, res) => {
-
-        const duration = Date.now() - start
-        console.log('executed query', { text, duration, rows: res.rowCount })
-
-        callback(err, res)
-
-      })
-    },
-
-      getClient: (callback) => {
-
-        pool.connect((err, client, done) => {
-
-          callback(err, client, done)
-
-        })
-      }
-  }
+  pool.connect((err) => {
+      if (err) throw err;
+      console.log('Connected!');
+    });
 
 /// Users
 
@@ -281,15 +250,6 @@ const addProperty = function(property) {
     console.log(err.message)
     
   });
-
-
-
-
-
-
-
-
-
 
 
   // const propertyId = Object.keys(properties).length + 1;
