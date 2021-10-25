@@ -1,5 +1,16 @@
 const bcrypt = require('bcrypt');
 
+const db = require('./database')
+
+app.get('/:id', (req, res, next) => {
+  db.query('SELECT * FROM users WHERE id = $1', [req.params.id], (err, result) => {
+    if (err) {
+      return next(err)
+    }
+    res.send(result.rows[0])
+  })
+})
+
 module.exports = function(router, database) {
 
   // Create a new user
