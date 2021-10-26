@@ -52,3 +52,12 @@ const submitProperty = function(data) {
     data,
   });
 }
+
+
+function makeReservation(data) {
+  return $.ajax({
+    method: "POST", 
+    url: "/api/book",
+    data,
+  });
+}

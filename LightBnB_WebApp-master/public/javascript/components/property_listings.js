@@ -27,4 +27,16 @@ $(() => {
   }
   window.propertyListings.addProperties = addProperties;
 
+
+  $("body").on('submit', function(event) {
+    if ($(event.target).hasClass("booking-form")) {      
+      event.preventDefault();
+
+      const data = $(event.target).serialize();
+      makeReservation(data)
+        .then(json => {
+          $(event.target).html(`<h2>Booked!</h2>`);
+        });
+    }
+  });
 });

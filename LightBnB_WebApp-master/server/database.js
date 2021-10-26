@@ -21,7 +21,6 @@ const getUserWithEmail = function(email) {
   .query(`SELECT * FROM users WHERE users.email = $1`, [email])
   .then((result) => {
 
-    // console.log("AAAAA: ", result);
     if(result.rows.length === 0) {
 
       return null;
@@ -52,8 +51,6 @@ const getUserWithId = function(id) {
   .then((result) => {
 
 
-    // console.log("BBBBB: ", result);
-
     if(result.rows.length === 0) {
 
       return null;
@@ -80,14 +77,10 @@ exports.getUserWithId = getUserWithId;
  */
 const addUser =  function(user) {
 
-  // console.log("ASDASDAD: ", user);
-
   return db
   .query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3) 
         RETURNING *;`, [user.name, user.email, user.password])
   .then((result) => {
-
-    // console.log("CCCCC: ", result);
 
     return result.rows[0];
 
@@ -146,8 +139,6 @@ const getAllProperties = function(options, limit = 10) {
   JOIN property_reviews ON properties.id = property_id
   `;
 
-  // console.log("ANSWER: ", options);
-
   if(Object.values(options).join('')) {
 
     queryString += `WHERE `;  
@@ -187,8 +178,6 @@ const getAllProperties = function(options, limit = 10) {
   }
 
 
-  // console.log("ANSWER: ", queryString);
-
   queryParams.push(limit);
 
   queryString += `
@@ -198,9 +187,6 @@ const getAllProperties = function(options, limit = 10) {
   LIMIT $${queryParams.length};
   
   `;
-
-
-  // console.log(queryString, queryParams);
 
 
   return db.query(queryString, queryParams).then((result) => {
@@ -245,4 +231,46 @@ const addProperty = function(property) {
   // properties[propertyId] = property;
   // return Promise.resolve(property);
 }
+
 exports.addProperty = addProperty;
+
+
+/**
+ * Add a reservation to the database
+ * @param {{start_date, end_date, property_id, guest_id }} reservation An object containing all of the reservation details.
+ * @return {Promise<{}>} A promise to the property.
+ */
+
+const addReservation = function(reservation) {
+
+  const queryParams = [
+    reservation.property_id,
+    reservation.guest_id,
+    reservation.start_date,
+    reservation.end_date
+
+  ];
+
+  return db.query(`
+
+    INSERT INTO reservations (property_id, guest_id, start_date, end_date) VALUES ($1, $2, $3, $4) 
+    RETURNING *; 
+  
+  ` , queryParams).then((result) => {
+
+    console.log("ANSWER!!!!", result)
+
+    return result.rows[0];
+
+  })
+  
+    .catch((err) => {
+    
+      console.log(err.message)
+    
+  });
+
+}
+
+exports.addReservation = addReservation;
+

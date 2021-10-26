@@ -61,6 +61,7 @@ $(() => {
               <option value="US">United States</option>
               <option value="CA">Canada</option>
               <option value="BR">Brazil</option>
+              <option value="MX">Mexico</option>
           </select>
         </div>
         <div id="new-property-form__locality-fields">
